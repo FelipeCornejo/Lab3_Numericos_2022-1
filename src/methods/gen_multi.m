@@ -1,12 +1,13 @@
 %multi: factor multiplicativo
 %n: cantidad de datos a generar
 %seed: semilla inicial (valor inicial de los numeros aleatorios)
+%m: modulo de la iteración
 %mini: Minimo de la función a generar
 %maxi: Maximo de la función a generar
-function [x,tiempo] = gen_multi(multi,n,seed,mini,maxi)
+function [coeficientes,tiempo] = gen_multi(multi,n,seed,m,mini,maxi,sims)
 
 % Metodo congruencial lineal
-% Yi = multi * Yi-1 + aditivo mod m
+% Yi = multi * Yi-1 mod m
 % donde m es un valor relacionado con la longitud de la secuencia
 
 % Luego el valor aleatorio en el espacio [0,1) es xi = yi/M
@@ -16,17 +17,16 @@ function [x,tiempo] = gen_multi(multi,n,seed,mini,maxi)
 %Diapo 9, https://uvirtual.usach.cl/moodle/pluginfile.php/744924/mod_resource/content/1/Unidad_VII_MetodosEstocasiticos.pdf
 
     tic
-    delta = maxi-mini;
-    i = 1;
-    while n > 2^i
-        i = i + 1;
-    end
-    m = 2^i;
-    for I=1:n
-        u = multi*seed;
-        y(I) = mod(u,m);
-        x(I) = delta*(y(I)/(m - 1));
-        seed = y(I);
+    coeficientes = [];
+    for i=1:sims
+        delta = maxi-mini;
+        for I=1:n
+            u = multi*seed;
+            y(I) = mod(u,m);
+            x(I) = delta*(y(I)/(m - 1));
+            seed = y(I);
+        end
+        coeficientes = [coeficientes;x];
     end
     tiempo = toc;
 end
