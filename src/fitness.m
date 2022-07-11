@@ -1,12 +1,10 @@
-function [seleccion,errores,min,max] = fitness(vectorIN, tarjet)
+function [seleccion,errores] = fitness(vectorIN, tarjet)
 
-[fila,col] = size (vectorIN);
-seleccion = [];
+[fila,~] = size(vectorIN);
 errores = [];
-min = 0;
-max = 0;
 for i=1:fila
-
-
+    errores = [errores; mse(tarjet-vectorIN(i,2:end))];
+    
 end
+seleccion = [errores, vectorIN];
 

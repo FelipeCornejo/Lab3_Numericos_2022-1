@@ -7,10 +7,9 @@ coeficientes = coef(:,2:end);
 n = size(coef,1);
 for i=1:n
     
-    coeficientes_calcular = fliplr(coeficientes(i,1:grados(i)));
-    valores = polyval(coeficientes_calcular,x);
+    coeficientes = fliplr(coeficientes(i,:grados(i)));
+    valores = polyval(coeficientes,x);
     valores_totales = [valores_totales; valores];
-
 end
 valores_totales = [coef(:,1),valores_totales];
     

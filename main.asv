@@ -42,8 +42,7 @@ x2 = 1:size(tarjet2,2);
 x3 = 1:size(tarjet3,2);
 
 iteraciones = 0;
-top_general_vals = [];
-top_general_coefs = [];
+top_vals = [1,2];
 while iteraciones < 100
     grados = randi([grado_min,grado_max],sims,1);
     
@@ -75,17 +74,8 @@ while iteraciones < 100
         nuevo_min_max = get_min_max(top_coefs(:,i));
         min_max1 = [min_max1,nuevo_min_max];
     end
-    
-    top_general_vals = [top_general_vals; top_vals];
-    top_general_coefs = [top_general_coefs; top_coefs];
-    top_general_vals = sortrows(top_general_vals,1);
-    top_general_coefs = sortrows(top_general_coefs,1);
-
     iteraciones = iteraciones + 1;
-    if var(top_vals(:,1)) < 10^-5
-        10101
-        break;
-    end
+    if var(top_vals(:,2)) > 10^-5
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -5,7 +5,7 @@
 %m: modulo de la iteración
 %mini: Minimo de la función a generar
 %maxi: Maximo de la función a generar
-function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
+function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max,sims)
 
 % Metodo congruencial lineal
 % Yi = multi * Yi-1 + aditivo mod m
@@ -19,16 +19,18 @@ function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
 
     tic
     coeficientes = [];
-    mini = min_max(1);
-    maxi = min_max(2);
-    delta = maxi-mini;
-    for I=1:n
-        u = multi*seed+aditivo;
-        y(I) = mod(u,m);
-        x(I) = mini+delta*(y(I)/(m - 1));
-        seed = y(I);
+    coef_pos = 1;
+    for i=1:sims
+        delta = min_max(2,coef_pos)-min_max(1,coef_pos);
+        for I=1:n
+            u = multi*seed+aditivo;
+            y(I) = mod(u,m);
+            x(I) = min_max(1,I)+delta*(y(I)/(m - 1));
+            seed = y(I);
+        end
+        coef_pos = coef_pos+1
+        coeficientes = [coeficientes,x'];
     end
-    coeficientes = [coeficientes,x];
     tiempo = toc;
 end
 
