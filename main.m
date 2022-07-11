@@ -13,13 +13,6 @@ tarjet3 = tarjet(1,2*corte+1:end);
 MULTI = 13;
 ADITI = 17;
 %M = 256;
-
-i = 1;
-while largo > 2^i
-    i = i + 1;
-end
-m = 2^i; 
-
 seed = 3; %se propone una seed inicial, pero está cambiará en el tiempo para las siguientes iteraciones de los generadores
 
 
@@ -32,7 +25,14 @@ min_max3 = min_max_iniciales;
 sims = 1000;
 corte = 0.2;
 
+i = 1;
+while sims > 2^i
+    i = i + 1;
+end
+m = 2^i;
+
 %Grados minimos y máximos iniciales
+grado_max_ini = 19;
 grado_min = 4;
 grado_max = 19;
 
@@ -65,21 +65,25 @@ while iteraciones < 100
     coeficientes_error = sortrows(coeficientes_error,1);
     top_coefs = coeficientes_error(1:end*corte,:);
     
+    top_general_vals = [top_general_vals; top_vals];
+    aa = size(top_coefs,2);
+    top_coefs(:,aa+1:grado_max_ini+2) = 0;
+
+    top_general_coefs = [top_general_coefs; top_coefs];
+    top_general_vals = sortrows(top_general_vals,1);
+    top_general_coefs = sortrows(top_general_coefs,1);
+    top_general_coefs = top_general_coefs(1:corte*end,:);
+    
     %Obtención de maximos y minimos en grados
     grado_min = min(top_vals(:,2));
     grado_max = max(top_vals(:,2));
     
     %Obtención de máximos y mínimos por coeficientes
     min_max1 = [];
-    for i=3:grado_max+4
-        nuevo_min_max = get_min_max(top_coefs(:,i));
+    for i=3:grado_max+3
+        nuevo_min_max = get_min_max(top_general_coefs(:,i));
         min_max1 = [min_max1,nuevo_min_max];
     end
-    
-    top_general_vals = [top_general_vals; top_vals];
-    top_general_coefs = [top_general_coefs; top_coefs];
-    top_general_vals = sortrows(top_general_vals,1);
-    top_general_coefs = sortrows(top_general_coefs,1);
 
     iteraciones = iteraciones + 1;
     if var(top_vals(:,1)) < 10^-5
