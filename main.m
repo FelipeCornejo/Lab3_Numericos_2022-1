@@ -2,12 +2,14 @@ clear
 clc
 %Carga de Datos
 load("data\data.mat");
-tarjet = ceil(conv(UCI_T, [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]/29));
+tarjet = ceil(conv(UCI_T, [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]/31));
 largo = size(tarjet,2); % largo = 82
-corte = floor(largo/3);
+corte = floor(largo/5);
 tarjet1 = tarjet(1,1:corte);
 tarjet2 = tarjet(1,corte+1:2*corte);
-tarjet3 = tarjet(1,2*corte+1:end);
+tarjet3 = tarjet(1,2*corte+1:3*corte);
+tarjet4 = tarjet(1,3*corte+1:4*corte);
+tarjet5 = tarjet(1,4*corte+1:end);
 
 % Definición de Cte
 MULTI = 13;
@@ -44,7 +46,9 @@ x3 = 1:size(tarjet3,2);
 iteraciones = 0;
 top_general_vals = [];
 top_general_coefs = [];
-while iteraciones < 100
+historico_min = [];
+historico_max = [];
+while iteraciones < 10000
     grados = randi([grado_min,grado_max],sims,1);
     
     %Generadores de números
@@ -82,15 +86,19 @@ while iteraciones < 100
     min_max1 = [];
     for i=3:grado_max+3
         nuevo_min_max = get_min_max(top_general_coefs(:,i));
+        historico_min = [historico_min, nuevo_min_max(1,:)];
+        historico_max = [historico_max, nuevo_min_max(2,:)];
         min_max1 = [min_max1,nuevo_min_max];
     end
 
     iteraciones = iteraciones + 1;
-    if var(top_vals(:,1)) < 10^-5
+    if var(top_general_vals(1:200,1)) < 10^-8
         10101
         break;
     end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Se puede ver que los datos con menor MSE llegan a ser de grado 4.
+% Lo que indica que se ajusta de manera cúbica. Por ende fitness podría
+% obtener otras medidas de errores respecto a curvas cubicas
 
