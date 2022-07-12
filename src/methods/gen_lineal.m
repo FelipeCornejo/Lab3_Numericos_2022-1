@@ -5,7 +5,7 @@
 %m: modulo de la iteración
 %mini: Minimo de la función a generar
 %maxi: Maximo de la función a generar
-function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
+function [coeficientes,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
 
 % Metodo congruencial lineal
 % Yi = multi * Yi-1 + aditivo mod m
@@ -17,7 +17,6 @@ function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
 
 %Diapo 9, https://uvirtual.usach.cl/moodle/pluginfile.php/744924/mod_resource/content/1/Unidad_VII_MetodosEstocasiticos.pdf
 
-    tic
     coeficientes = [];
     mini = min_max(1);
     maxi = min_max(2);
@@ -29,6 +28,5 @@ function [coeficientes,tiempo,seed] = gen_lineal(multi,aditivo,n,seed,m,min_max)
         seed = y(I);
     end
     coeficientes = [coeficientes,x];
-    tiempo = toc;
 end
 
